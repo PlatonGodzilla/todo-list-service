@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание записки</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="container page">
+    <div class="topbar">
+      <div class="brand">
+        <h2>Создание записки</h2>
+        <p class="sub">Заголовок, текст и при желании картинка</p>
+      </div>
+      <div class="actions">
+        <a href="/" class="btnx">← Назад</a>
+      </div>
+    </div>
+
+    <div class="cardx formx">
+      <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">Заголовок</label>
+          <textarea id="title" name="title" rows="2" placeholder="Например: Купить молоко"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="todo">Описание</label>
+          <textarea id="todo" name="todo" rows="6" placeholder="Текст записки..."></textarea>
+        </div>
+       
+        <div class="form-group">
+          <label for="url">Внешний источник (ссылка)</label>
+          <input type="url" name="url" class="form-control" placeholder="Ссылка на изображение" style="margin-bottom: 10px;">  
+        </div>
+
+        {% if error_message %}
+            <div class="alert alert-danger mt-3" role="alert">
+            {{ error_message }}
+            </div>
+        {% endif %}
+        <label style="text-indent: 20px; margin-bottom: -5px" ><h5>Или</h5></label>
+        <div class="file-row">
+          <label for="file">Выбрать файл</label>
+          <input type="file" name="file" class="btnx" style="background-color: rgb(88, 185, 107);">
+          <input type="submit" name="submit" class="btnx primary" value="Готово">
+        </div>        
+      </form>
+    </div>
+  </div>
+</body>
+</html>

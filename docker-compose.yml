@@ -1,0 +1,7 @@
+services:
+  app:
+    build: .
+    volumes:
+      - ./users.db:/app/users.db
+    ports:
+      - 5005:8000

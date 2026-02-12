@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/app.css">
+</head>
+<body class="share-page">
+  <div class="container page">
+
+    <div class="topbar">
+      <div class="brand">
+        <h2>Записка</h2>
+        <p class="sub">Открыта по ссылке</p>
+      </div>
+      <div class="actions">
+        <a href="/" class="btnx">← На главную</a>
+        <a href="/logout" class="btnx danger">Выход</a>
+      </div>
+    </div>
+
+    <div class="cardx note share-view">
+      <div class="text-center">
+        <h3>{{ Title }}</h3>
+      </div>
+
+      {% if image %}
+        <div class="share-img-wrap">
+          <img src="../{{ image }}" alt="image" class="share-img">
+        </div>
+      {% endif %}
+
+      <div class="note-text">{{ note }}</div>
+    </div>
+
+  </div>
+</body>
+</html>

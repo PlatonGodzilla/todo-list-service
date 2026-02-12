@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # gitignore template for Drupal 8 projects
 #
 # earlier versions of Drupal are tracked in `community/PHP/`
@@ -63,3 +64,11 @@
 /drush
 /drupal.phar
 /drupal
+=======
+__pycache__/
+users.db
+images/
+.venv/
+*.pyc
+.DS_Store
+>>>>>>> 3dab069 (my service created)

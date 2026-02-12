@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="container page">
+
+    <div class="topbar">
+      <div class="brand">
+        <h2>Привет, {{username}}</h2>
+        <p class="sub">Твои записки — всё в одном месте</p>
+      </div>
+
+      <div class="actions">
+        <a href="/addTodo" class="btnx primary">+ Создать</a>
+        <a href="/logout" class="btnx danger">Выход</a>
+      </div>
+    </div>
+
+    <div class="section-title">Ваши записки</div>
+
+    <div class="notes-grid">
+      {% for item in items %}
+        <div class="cardx note">
+          <div class="text-center">
+            <h3>{{ item.title }}</h3>
+          </div>
+          {% if item.img %}
+            <img class="zoomable" src="{{ item.img }}" alt="image">
+          {% endif %}
+
+          <div class="note-text">{{ item.note }}</div>
+
+          <div class="note-meta" class="actions">
+            <form method="get" action="/download-file/{{item.SHARE_ID}}">
+              <input type="submit" class="btnx" style="background-color: rgb(88, 185, 107);" value="Скачать">
+            </form>
+            <a href="/p/{{ item.SHARE_ID }}" class="btnx small primary">Поделиться</a>
+            <form method="post" action="/delete/{{ item.SHARE_ID }}">
+              <input type="submit" class="btnx danger" value="Удалить">
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+  <div id="imgOverlay">
+    <img id="imgOverlayPic" src="" alt="zoom">
+  </div>
+  <script>
+    const overlay = document.getElementById("imgOverlay");
+    const overlayPic = document.getElementById("imgOverlayPic");
+
+    document.addEventListener("click", (e) => {
+      const img = e.target.closest("img.zoomable");
+      if (!img) return;
+
+      overlayPic.src = img.src;
+      overlay.classList.add("open");
+    });
+
+    // Закрытие: увёл мышь с оверлея или нажал Esc или кликнул по оверлею
+    overlay.addEventListener("click", () => overlay.classList.remove("open"));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.classList.remove("open");
+    });
+  </script>
+  
+</body>
+</html>
