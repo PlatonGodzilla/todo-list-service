@@ -1,5 +1,5 @@
 from sqlite3 import Connection
-
+from app.models.users_model import User
 
 def get_user_data(conn: Connection,
                     email: str, 

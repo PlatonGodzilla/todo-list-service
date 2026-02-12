@@ -1,10 +1,10 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class Todo(BaseModel):
-    id: int
+    id: Optional[int]
     file: str
     title: str
     todo: str
     share_id: str
-    user_id: int

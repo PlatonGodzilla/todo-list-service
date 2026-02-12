@@ -1,6 +1,6 @@
 from app.deps import cookie_params, BasicVerifier, SessionData, cookie, backend, verifier
 from app import db
-from app.services.todo_service import get_todo_data, insert_todo_data, get_file, delete_todo
+from app.services.todo_service import get_todo_data, insert_todo_data, get_file, delete_todo, get_shared_data
 from sqlite3 import Connection
 from fastapi import FastAPI, Form, Request, Depends, HTTPException, Response, File, UploadFile, APIRouter
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
@@ -75,12 +75,15 @@ def SharePost(
     request: Request,
     conn=Depends(db.get_db)
 ):
-    shared_content = get_todo_data(conn, None, share_id)
+    shared_content = get_shared_data(conn, share_id)
     if shared_content is None:
         raise HTTPException(status_code=404, detail="Post not found")
     
     
-    pic, Title, formatted_data = shared_content
+    pic = shared_content.file
+    Title = shared_content.title
+    formatted_data = shared_content.todo
+
     print(pic)
     if not(os.path.exists(pic)):
         pic = ''
@@ -97,7 +100,7 @@ async def index(request: Request, conn=Depends(db.get_db), session_id=Depends(co
     if user_data == None:
         return RedirectResponse("login")
 
-    todos = get_todo_data(conn, user_data.id, share_id=None)
+    todos = get_todo_data(conn, user_data.id)
         
     id = []
     Title = []
@@ -105,11 +108,11 @@ async def index(request: Request, conn=Depends(db.get_db), session_id=Depends(co
     decoded_images = []
     share_ID = []
     for todo_item in todos:
-        id.append(todo_item[0])
-        Title.append(todo_item[2])
-        formatted_data.append(todo_item[3]) 
-        decoded_images.append(todo_item[1])
-        share_ID.append(todo_item[4])
+        id.append(todo_item.id)
+        Title.append(todo_item.title)
+        formatted_data.append(todo_item.todo) 
+        decoded_images.append(todo_item.file)
+        share_ID.append(todo_item.share_id)
 
     items = []
 
