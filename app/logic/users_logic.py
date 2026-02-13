@@ -45,7 +45,7 @@ def user_registration(
 async def login_user(
         conn: Connection,
         email: str,
-        password
+        password: str
 ):
     hash_pass = hashlib.sha256(password.encode('utf-8')).hexdigest()
     user = get_user_data(conn, email, hash_pass)
