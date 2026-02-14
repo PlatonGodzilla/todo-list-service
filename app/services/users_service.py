@@ -11,7 +11,13 @@ def get_user_data(conn: Connection,
     else:
         cursor.execute("SELECT id, name, email FROM usrs WHERE email = ? AND password = ?", (email, password))
 
-    return cursor.fetchone()
+    item = cursor.fetchone()
+
+    return User(
+        id=item[0],
+        username=item[1],
+        email=item[2]
+    )
 
 
 def insert_user_data(conn: Connection,

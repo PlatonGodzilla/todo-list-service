@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 
-CMD ["uvicorn", "--host=0.0.0.0", "main:app"]
+CMD ["uvicorn", "--host=0.0.0.0", "app.main:app"]

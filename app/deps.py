@@ -1,3 +1,4 @@
+from app.models.users_model import User
 from fastapi_sessions.frontends.implementations import SessionCookie, CookieParameters
 from fastapi_sessions.backends.implementations import InMemoryBackend
 from fastapi_sessions.session_verifier import SessionVerifier
@@ -7,10 +8,6 @@ import os
 from fastapi import HTTPException
 
 # Модель для сессии
-class SessionData(BaseModel):
-    id: int
-    username: str
-    email: str
 
 # куки________________________________________________________
 cookie_params = CookieParameters(max_age=1800)
@@ -21,19 +18,19 @@ cookie = SessionCookie(
     secret_key= str(os.urandom(32)),
     cookie_params=cookie_params,
 )
-backend = InMemoryBackend[UUID, SessionData]()
+backend = InMemoryBackend[UUID, User]()
 
 
 
 
 #верифка________________________________________________________
-class BasicVerifier(SessionVerifier[UUID, SessionData]):
+class BasicVerifier(SessionVerifier[UUID, User]):
     def __init__(
         self,
         *,
         identifier: str,
         auto_error: bool,
-        backend: InMemoryBackend[UUID, SessionData],
+        backend: InMemoryBackend[UUID, User],
         auth_http_exception: HTTPException,
     ):
         self._identifier = identifier
@@ -57,7 +54,7 @@ class BasicVerifier(SessionVerifier[UUID, SessionData]):
     def auth_http_exception(self):
         return self._auth_http_exception
 
-    def verify_session(self, model: SessionData) -> bool:
+    def verify_session(self, model: User) -> bool:
         """If the session exists, it is valid"""
         return True
 

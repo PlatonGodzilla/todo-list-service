@@ -1,4 +1,4 @@
-from app.deps import cookie_params, BasicVerifier, SessionData, cookie, backend, verifier
+from app.deps import cookie_params, BasicVerifier, User, cookie, backend, verifier
 from app import db
 from app.logic.users_logic import check_session_data, user_registration, status, login_user, logout_user
 from fastapi import FastAPI, Form, Request, Depends, APIRouter
@@ -10,7 +10,7 @@ app = FastAPI()
 router = APIRouter()
 
 @router.get("/register")
-def registerPage(request: Request, session_id=Depends(cookie), session_data: SessionData = Depends(verifier)):
+def registerPage(request: Request, session_id=Depends(cookie), session_data: User = Depends(verifier)):
     if check_session_data(session_data):
         return RedirectResponse("/", status_code=302)
     return templates.TemplateResponse("register.html", {"request": request})
@@ -33,7 +33,7 @@ def register(request: Request, conn=Depends(db.get_db), name: str = Form(), emai
         return RedirectResponse("/", status_code=302)
     
 @router.get("/login")
-def loginPage(request: Request, session_id=Depends(cookie), session_data: SessionData = Depends(verifier)):
+def loginPage(request: Request, session_id=Depends(cookie), session_data: User = Depends(verifier)):
     if check_session_data(session_data):
         return RedirectResponse("/", status_code=302)
     return templates.TemplateResponse("login.html", {"request": request})

@@ -1,4 +1,4 @@
-from app.deps import cookie_params, BasicVerifier, SessionData, cookie, backend, verifier
+from app.deps import cookie_params, BasicVerifier, User, cookie, backend, verifier
 from app.services.todo_service import get_todo_data, insert_todo_data, get_file, delete_todo, get_shared_data
 from fastapi import File, UploadFile
 from uuid import uuid4
@@ -22,7 +22,7 @@ async def post_todo(
         title: str,
         todo: str,
         url: str,
-        session_data: SessionData,
+        session_data: User,
 
 ):
     
@@ -70,7 +70,7 @@ def shared_todo(
 
 def get_todo(
         conn: Connection,
-        session_data: SessionData
+        session_data: User
 ):
     user_data = session_data
     if user_data == None:

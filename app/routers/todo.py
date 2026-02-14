@@ -1,4 +1,4 @@
-from app.deps import cookie_params, BasicVerifier, SessionData, cookie, backend, verifier
+from app.deps import cookie_params, BasicVerifier, cookie, backend, verifier, User
 from app import db
 from app.logic.todo_logic import status, post_todo, shared_todo, get_todo, download_post, delete_post
 from fastapi import FastAPI, Form, Request, Depends, HTTPException, File, UploadFile, APIRouter
@@ -25,7 +25,7 @@ async def todo(
     url: str = Form(),
     conn=Depends(db.get_db),
     session_id=Depends(cookie),
-    session_data: SessionData = Depends(verifier)
+    session_data: User = Depends(verifier)
 ):
     post_todo_status = await post_todo(conn, file, title, todo, url, session_data)
     if post_todo_status == status.SESSION_NOT_FOUND:
@@ -65,7 +65,7 @@ def SharePost(
         }, 
     ) 
 @router.get('/', response_class=HTMLResponse)
-async def index(request: Request, conn=Depends(db.get_db), session_id=Depends(cookie), session_data: SessionData = Depends(verifier)):
+async def index(request: Request, conn=Depends(db.get_db), session_id=Depends(cookie), session_data: User = Depends(verifier)):
     get_todo_status = get_todo(conn, session_data)
     if get_todo_status["status"] == status.SESSION_NOT_FOUND:
         return RedirectResponse("login")
